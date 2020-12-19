@@ -157,12 +157,11 @@ void saveList(listElement *start){
         return;
     }
 
-    //writes into the file
-
     if(currElem->nextElem == NULL) {
-        printf("empty file.\n");
-        return;
+        printf("You created an empty file.\n");
     }
+
+    //writes into the file
     while(currElem->nextElem != NULL && counter != getLenOfList(start)){
         currElem = currElem->nextElem;
         fprintf(fptr, "%s\n%s\n%d\n", currElem -> lastName, currElem -> firstName, currElem -> age);
@@ -181,7 +180,6 @@ void loadList(listElement *start){
     listElement* newElem;
     char filename[50];
    
-
     printf("*****************************************************************************************\n");
     system("dir. *txt");
     printf("*****************************************************************************************\n");
@@ -203,7 +201,6 @@ void loadList(listElement *start){
     
     }
         
-
 	printf("loading data will be append to current list...\n");
 	printList(start); // show loaded list
 
