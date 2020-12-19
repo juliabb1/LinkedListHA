@@ -31,17 +31,20 @@ void addListElem(listElement *start){
 
 void printList(listElement *start){
 
-    if(start -> nextElem == NULL) {
-        printf("Empty list.\n");
+    listElement *currElem = start;
+
+    if(currElem -> nextElem == NULL) {
+        printf("Empty list.\n\n");
         return;
     }
 
     printf("**********************************\n");
-    while(start->nextElem != NULL) {
-        start = start->nextElem;
-        printf("Last name: %s \n", start -> lastName);
-        printf("First name: %s \n", start -> firstName);
-        printf("Age: %d \n", start -> age);
+    printf("\n");
+    while(currElem->nextElem != NULL) {
+        currElem = currElem->nextElem;
+        printf("Last name: %s \n", currElem -> lastName);
+        printf("First name: %s \n", currElem -> firstName);
+        printf("Age: %d \n", currElem -> age);
         printf("\n");
     }
     printf("**********************************\n");
@@ -49,6 +52,8 @@ void printList(listElement *start){
 }
 
 void delListElem(listElement *start){
+
+    int choice = 0;
 
     if(start->nextElem == NULL) {                                             //when list ist empty
         printf("Empty list.\n\n");
@@ -61,30 +66,64 @@ void delListElem(listElement *start){
 
     printf("Last name of the person you want to remove: ");
     scanf("%s", &remove_lastName);
+
     
     while(strcmp(currElem -> nextElem->lastName, remove_lastName) != 0){        //searches for the element that should be deleted
-        currElem = currElem->nextElem;                                          //currElem points to the element before the to be deleted list
+        currElem = currElem->nextElem;                                          //currElem points to the element before delElem
     }
+
     delElem = currElem -> nextElem;                                             //delElem points to the element that should be deleted
+
+    //safety question
+    printf("Do you really want to remove this element?\n");
+    printf("**********************************\n");
+    printf("Last name: %s \n", delElem -> lastName);
+    printf("First name: %s \n", delElem -> firstName);
+    printf("Age: %d \n", delElem -> age);
+    printf("**********************************\n");
+    printf("0: no\n1: yes\n");
+    scanf("%d", &choice);
+    system("cls");
+
+    //removal
+    if(!choice) {
+        printf("Element will not be deleted.\n\n");
+        return;
+    }
+
     currElem -> nextElem = delElem -> nextElem;                                 //currElem points to nextElem which now ist the Elem after delElem
     free(delElem);
     printf("Succesfully deleted!\n\n");
+
 }
 
 void delList(listElement *start){
+
+    int choice = 0;
 
     if(start -> nextElem == NULL) {
         printf("List is already empty.\n\n");
         return;
     }
 
+    //safety question
+    printf("Do you really want to delete the whole list?\n");
+    printf("0: no\n1: yes\n");
+    scanf("%d", &choice);
+    printf("\n");
+
+    if(!choice) {
+        printf("List will not be deleted.\n\n");
+        return;
+    }
+
     listElement *currElem = start;
     listElement *delElem;
 
-    while(currElem -> nextElem != NULL) {
-        delElem = currElem -> nextElem;
-        currElem -> nextElem = delElem -> nextElem;
-        free(delElem);
+    while(currElem -> nextElem != NULL) {                                       //iteration until last elem in list
+        delElem = currElem -> nextElem;                                         
+        currElem -> nextElem = delElem -> nextElem;                             
+        free(delElem);                                                          //deallocation of delElem
     }
 
     printf("List succesfully deleted!\n\n");
@@ -97,29 +136,78 @@ int getLenOfList(listElement *start){ // we use this for save list fcn
     int counter = 0;
     listElement * currElem = start;
     while (currElem->nextElem != NULL) {// get last elem in list
-        currElem = currElem->nextElem; counter++;
+        currElem = currElem->nextElem; 
+        counter++;
         }
     return counter;
 }
 
 void saveList(listElement *start){
 
-    /* YOUR CODE HERE */
-    /* ---------------*/
-	
-    printf("\n>> saveList fcn is tbd.\n\n");
+    FILE *fptr;
+    listElement* currElem = start;
+    char filename[50];
+    int counter = 0;
+
+    printf("filename: ");                       //user chooses the filename
+    scanf("%s", &filename);
+    fptr = fopen(filename, "w");               //will create a file with mode "w": write
+    if(fptr == NULL) {
+        printf("Could not open file.\n");
+        return;
+    }
+
+    //writes into the file
+
+    if(currElem->nextElem == NULL) {
+        printf("empty file.\n");
+        return;
+    }
+    while(currElem->nextElem != NULL && counter != getLenOfList(start)){
+        currElem = currElem->nextElem;
+        fprintf(fptr, "%s\n%s\n%d\n", currElem -> lastName, currElem -> firstName, currElem -> age);
+        counter++;
+    }
+
+
+    fclose(fptr);
+
 }
 
 void loadList(listElement *start){
 	
-	
-    /* YOUR CODE HERE */
-    /* ---------------*/
+	FILE *fptr;
+    listElement* currElem = start;
+    listElement* newElem;
+    char filename[50];
+   
+
+    printf("*****************************************************************************************\n");
+    system("dir. *txt");
+    printf("*****************************************************************************************\n");
+    printf("filename: ");
+    scanf("%s", filename);
+    fptr = fopen(filename, "r");
+
+    if(fptr == NULL){
+        printf("Could not open file.\n");
+        return;
+    }
+
+    while(!feof(fptr)){
+        newElem = (listElement*)malloc(sizeof(listElement));                                                
+        currElem -> nextElem =  newElem;
+        newElem -> nextElem = NULL;
+        currElem = newElem;
+        fscanf(fptr, "%s\n%s\n%d\n", &(currElem -> lastName), &(currElem -> firstName), &(currElem -> age));
     
-    printf("\n>> loadList fcn is tbd.\n\n");
+    }
+        
 
 	printf("loading data will be append to current list...\n");
 	printList(start); // show loaded list
+
+    fclose(fptr);
 }
 
 void exitFcn(listElement *start){
