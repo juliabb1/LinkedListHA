@@ -53,16 +53,15 @@ void printList(listElement *start){
 
 void delListElem(listElement *start){
 
+    listElement *currElem = start;
+    listElement *delElem;
+    char remove_lastName[50];
     int choice = 0;
 
-    if(start->nextElem == NULL) {                                             //when list ist empty
+    if(currElem->nextElem == NULL) {                                             //when list ist empty
         printf("Empty list.\n\n");
         return;
     }
-
-    char remove_lastName[50];
-    listElement *currElem = start;
-    listElement *delElem;
 
     printf("Last name of the person you want to remove: ");
     scanf("%s", &remove_lastName);
@@ -99,9 +98,11 @@ void delListElem(listElement *start){
 
 void delList(listElement *start){
 
+    listElement *currElem = start;
+    listElement *delElem;
     int choice = 0;
 
-    if(start -> nextElem == NULL) {
+    if(currElem -> nextElem == NULL) {
         printf("List is already empty.\n\n");
         return;
     }
@@ -116,9 +117,6 @@ void delList(listElement *start){
         printf("List will not be deleted.\n\n");
         return;
     }
-
-    listElement *currElem = start;
-    listElement *delElem;
 
     while(currElem -> nextElem != NULL) {                                       //iteration until last elem in list
         delElem = currElem -> nextElem;                                         
@@ -180,6 +178,7 @@ void loadList(listElement *start){
     listElement* newElem;
     char filename[50];
    
+
     printf("*****************************************************************************************\n");
     system("dir. *txt");
     printf("*****************************************************************************************\n");
@@ -209,7 +208,7 @@ void loadList(listElement *start){
 
 void exitFcn(listElement *start){
 
-    printf("\n>> exitFcn fcn is tbd.\n\n");
+    printf("\n>> Goodbye.\n\n");
 
 }
 
