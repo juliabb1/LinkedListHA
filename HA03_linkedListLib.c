@@ -187,21 +187,20 @@ void loadList(listElement *start){
     system("dir. *txt");
     printf("*****************************************************************************************\n");
     printf("filename: ");
-    scanf("%s", filename);
-    fptr = fopen(filename, "r");
+    scanf("%s", filename);                                          
+    fptr = fopen(filename, "r");                                       
 
     if(fptr == NULL){
         printf("Could not open file.\n");
         return;
     }
 
-    while(!feof(fptr)){
-        newElem = (listElement*)malloc(sizeof(listElement));                                                
-        currElem -> nextElem =  newElem;
-        newElem -> nextElem = NULL;
-        currElem = newElem;
-        fscanf(fptr, "%s\n%s\n%d\n", &(currElem -> lastName), &(currElem -> firstName), &(currElem -> age));
-    
+    while(!feof(fptr)){                                                 //will add newElem as long as EOF flag is 0
+        newElem = (listElement*)malloc(sizeof(listElement));            //Deallocates memory for newElem in the list                                    
+        currElem -> nextElem =  newElem;                                //newElem gets linked to the list   
+        newElem -> nextElem = NULL;                                     //nextElem in newElem doesn't exist yet -> points to NULL
+        currElem = newElem;                                             
+        fscanf(fptr, "%s\n%s\n%d\n", &(currElem -> lastName), &(currElem -> firstName), &(currElem -> age));   
     }
         
 	printf("loading data will be append to current list...\n");
