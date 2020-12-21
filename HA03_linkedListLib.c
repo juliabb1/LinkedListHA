@@ -65,10 +65,14 @@ void delListElem(listElement *start){
 
     printf("Last name of the person you want to remove: ");
     scanf("%s", &remove_lastName);
-
     
     while(strcmp(currElem -> nextElem->lastName, remove_lastName) != 0){        //searches for the element that should be deleted
         currElem = currElem->nextElem;                                          //currElem points to the element before delElem
+  
+        if(currElem->nextElem == NULL) {                                        //if list ends without having found the name
+            printf("Element not in the list.\\nn");
+            return;
+        }
     }
 
     delElem = currElem -> nextElem;                                             //delElem points to the element that should be deleted
