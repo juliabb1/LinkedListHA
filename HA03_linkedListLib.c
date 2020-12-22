@@ -70,7 +70,7 @@ void delListElem(listElement *start){
         currElem = currElem->nextElem;                                          //currElem points to the element before delElem
   
         if(currElem->nextElem == NULL) {                                        //if list ends without having found the name
-            printf("Element not in the list.\\nn");
+            printf("Element not in the list.\n\n");
             return;
         }
     }
